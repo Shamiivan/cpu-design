@@ -1,4 +1,7 @@
 v 4
+file . "next_address.vhd" "8c4698b782154645136cf78f5f55f885428a293c" "20231122091122.743":
+  entity next_address at 1( 0) + 0 on 13;
+  architecture nextaddr of next_address at 17( 818) + 0 on 14;
 file . "register_file.vhd" "882c0d9a5f5000c19a80487d75dfaa13e4f2b69b" "20231122090422.373":
   entity regfile at 1( 0) + 0 on 11;
   architecture reg of regfile at 19( 872) + 0 on 12;
