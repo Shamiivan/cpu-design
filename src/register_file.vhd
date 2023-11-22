@@ -16,7 +16,7 @@ entity regfile is
     );
 end regfile;
 
-architecture reg of regfile is
+architecture behavioral of regfile is
     type slv_array is array (0 to 31) of std_logic_vector(31 downto 0);
     signal reg: slv_array;  -- Register file storage
 begin 
@@ -40,4 +40,4 @@ begin
     -- Output data for read ports A and B based on the specified addresses
     out_a <= reg(to_integer(unsigned(read_a)));
     out_b <= reg(to_integer(unsigned(read_b)));
-end reg;
+end behavioral;

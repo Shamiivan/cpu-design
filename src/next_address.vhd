@@ -14,7 +14,7 @@ entity next_address is
     );
 end next_address;
 
-architecture nextaddr of next_address is 
+architecture structural of next_address is 
     signal branch_out : std_logic_vector(31 downto 0);  -- Intermediate signal for branch calculation
     signal offset     : signed(31 downto 0);            -- Offset for branch calculation
 begin 
@@ -46,4 +46,4 @@ begin
                    "000000" & target_address when "01",                 -- Jump to target address
                    rs when "10",                                       -- Jump to address in source register
                    (others => '0') when others;                       -- Default (no change in PC)
-end nextaddr;
+end structural;
