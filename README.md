@@ -1,6 +1,6 @@
-🌭🔥 **Glizzium: Spicing Up CPU Design with Flavorful Innovation!** 🔥🌭
+# 🌭🔥 **Glizzium: Spicing Up CPU Design with Flavorful Innovation!** 🔥🌭
 
-# CPU Design
+
 
 Dive into the delectable world of Glizzium, where CPU design becomes a savory journey through VHDL. Our comprehensive CPU design boasts a control unit, instruction memory, register files, data memory, and a tantalizing ALU. Ideal for both seasoned developers and glizzy enthusiasts alike, Glizzium's VHDL architecture is the perfect blend of learning and flavor.
 
