@@ -1,37 +1,44 @@
+🌭🔥 **Glizzium: Spicing Up CPU Design with Flavorful Innovation!** 🔥🌭
+
 # CPU Design
 
-Comprehensive CPU design in VHDL, featuring control unit, instruction memory, register files, data memory, and ALU. Ideal for learning and implementing CPU architecture by students, hobbyists,
+Dive into the delectable world of Glizzium, where CPU design becomes a savory journey through VHDL. Our comprehensive CPU design boasts a control unit, instruction memory, register files, data memory, and a tantalizing ALU. Ideal for both seasoned developers and glizzy enthusiasts alike, Glizzium's VHDL architecture is the perfect blend of learning and flavor.
 
 # ALU
 
-The ALU has two 32-bit input operands (ports x and y) and a 32-bit output port. It utilizes control inputs func and logic_func to determine arithmetic and logical operations. The func control selects operations like load upper immediate, set less than zero, addition/subtraction, or logical operations, while logic_func controls logical operations (AND, OR, XOR, NOR). An additional control signal, add_sub, distinguishes between addition and subtraction, with arithmetic performed in 32-bit two's complement notation. See Figure 1 for a visual representation of the ALU's operations.
+The Glizzium ALU is the heart of our spicy CPU, featuring two 32-bit input operands and a 32-bit output port. It dances to the rhythm of control inputs like func and logic_func, orchestrating a symphony of arithmetic and logical operations. From load upper immediate to set less than zero, our ALU is seasoned with versatility. And let's not forget logic_func, the maestro behind AND, OR, XOR, and NOR operations—because computing should be as flavorful as your favorite glizzy!
 
 ![1700642004659](image/README/1700642004659.png)
 
-## MSB of adder
+## MSB of Adder
 
-The Most Significant Bit (MSB) is determined in the context of the "slt" (set less than zero) instruction. This instruction sets a specified register to 1 if x < y and 0 otherwise. The condition x < y is checked by performing the operation x - y. The sign bit of the output of the subtract operation (adder_subtract unit) is padded with 0s to form a 32-bit number.
+In the world of Glizzium, the Most Significant Bit (MSB) takes center stage during the "slt" (set less than zero) instruction. Picture this: the spicy comparison of x and y, the subtract operation unveiling the sign bit, and the grand finale—padding with 0s to create a 32-bit masterpiece. That's the magic of Glizzium's MSB, where every bit tells a flavorful story.
 
-## Output of adder
+## Output of Adder
 
-## Output of logic Unit
+The output of our adder is like the perfect glizzy bite—full of substance and satisfaction. It's the result of a carefully orchestrated addition or subtraction, with arithmetic performed in the bold language of 32-bit two's complement notation. Glizzium's adder ensures that every computation is as robust and satisfying as your favorite glizzy feast.
+
+## Output of Logic Unit
+
+Glizzium's logic unit brings a burst of flavor to your computations. It's the secret sauce behind logical operations—AND, OR, XOR, and NOR. Just like choosing the right condiment for your glizzy, our logic unit lets you spice up your code with precision, making every computation a taste sensation.
 
 # PC Entity
 
 ## Entity Declaration
 
 ```vhdl
-entity pc is
+-- Embrace the Glizzium Journey
+entity glizzy_pc is
     port(
-        pc_in  : in  std_logic_vector(31 downto 0);  -- Input: New value for Program Counter
-        reset  : in  std_logic;                       -- Input: Reset signal
-        clk    : in  std_logic;                       -- Input: Clock signal
-        pc_out : out std_logic_vector(31 downto 0)   -- Output: Current value of Program Counter
+        glizzy_pc_in  : in  std_logic_vector(31 downto 0);  -- Input: New value for Glizzy Program Counter
+        glizzy_reset  : in  std_logic;                      -- Input: Reset signal
+        glizzy_clk    : in  std_logic;                      -- Input: Clock signal
+        glizzy_pc_out : out std_logic_vector(31 downto 0)  -- Output: Current value of Glizzy Program Counter
     );
-end pc;
+end glizzy_pc;
 ```
 
-The `pc` entity represents a basic Program Counter (PC) module in a digital system. It has inputs for a new PC value (`pc_in`), a reset signal (`reset`), and a clock signal (`clk`). The current PC value is available as an output (`pc_out`).
+Introducing the Glizzy Program Counter (PC) entity—a crucial part of our flavorful digital system. It's not just a counter; it's the pulse of Glizzium, with inputs for a new PC value, a reset signal, and the heartbeat of computing—clock signal. The current PC value is not just an output; it's a flavorful revelation.
 
 # Registers
 
@@ -41,80 +48,45 @@ The `pc` entity represents a basic Program Counter (PC) module in a digital syst
 
 # Instruction Cache
 
-The `instruction_cache` entity represents an Instruction Cache unit. It has a 5-bit address input (`addr`) for instruction retrieval and a 32-bit data output (`instr`) representing the machine code of the instruction stored at the addressed location.
-
-The VHDL process with a case statement is used to implement the I-cache. Different programs can be tested by modifying the cases. The opcode and func fields within the instruction are not critical for this lab, but the values of rs, rt, rd, and immediate fields are essential for testing the datapath functionality.
-
-The `addr` input is used to select the corresponding machine code based on the specified cases. If the address matches one of the cases, the corresponding instruction is output (`instr`). If the address doesn't match any case, the output is set to zero.
+The Glizzium Instruction Cache unit is where the magic begins. With a 5-bit address input and a 32-bit data output, it's the gateway to the glizzy-inspired machine code. Just like choosing the perfect glizzy toppings, the `instruction_cache` entity lets you select instructions with precision. Modify the cases, change the flavor—because in Glizzium, every instruction is a culinary delight.
 
 # Sign Extension
 
-The Sign Extension component is responsible for extending the 16-bit immediate field of I-format instructions to a full 32-bit width. The specific sign extension process depends on the type of instruction being executed, determined by the control signal `func`. This documentation provides an overview of the Sign Extension component and its implementation.
-
-## Sign Extension Formats:
-
-The Sign Extension component supports different sign extension formats based on the `func` control signal. The formats are summarized in Table 4:
-
-**Table 4: Sign Extension Formats**
-
-| func | Instruction Type     | Sign Extension            | Comments                                                                    |
-| ---- | -------------------- | ------------------------- | --------------------------------------------------------------------------- |
-| 00   | Load Upper Immediate | i15i14i13..i1i0 000..00   | Pad with 16 zeros at least significant positions                            |
-| 01   | Set Less Immediate   | i15i15... i15i14i13..i1i0 | Arithmetic sign extend (pad high order with copy of immediate sign bit i15) |
-| 10   | Arithmetic           | i15i15... i15i14i13..i1i0 | Arithmetic sign extend (pad high order with copy of immediate sign bit i15) |
-| 11   | Logical              | 00...00 i15i14i13..i1i0   | High order 16 bits padded with zeros                                        |
-
-## VHDL Implementation:
-
-The VHDL implementation of the Sign Extension component is encapsulated within the `signextend` entity and `signextend_arch` architecture. It utilizes the `func` control signal to determine the appropriate sign extension format. The main logic is implemented as follows:
-
-```vhdl
-architecture signextend_arch of signextend is 
-    signal zero_ext : std_logic_vector(15 downto 0) := (others => '0');  -- Zero-extended version of imm
-begin 
-    -- Sign Extension Logic
-    with func select 
-        ext_imm <= imm & zero_ext when "00",                    -- Zero extension
-                   std_logic_vector(resize(signed(imm), 32)) when "01" | "10",  -- Sign extension
-                   zero_ext & imm when others;                   -- Zero extension
-
-end signextend_arch;
-```
-
-## Usage in MIPS Datapath:
-
-The Sign Extension component is an integral part of the MIPS datapath. It ensures that the immediate field is appropriately sign-extended before being used in various instructions. The MIPS datapath includes a data cache, and the Sign Extension component is essential for handling immediate values in load, store, and other instructions.
-
+In the world of Glizzium, the Sign Extension is the spice that brings balance to our immediate field. Whether it's loading upper immediate, setting less than, or diving into arithmetic and logical operations, our Sign Extension ensures that your code's flavor is just right. With different sign extension formats to choose from, Glizzium lets you sign-extend with style.
 
 # Data Cache
 
-## Overview:
+## Overview
 
-The Data Cache serves as a 32-location, 32-bit-wide RAM in the MIPS datapath. It is addressed by the low-order 5 bits of the ALU output. This documentation outlines its specifications, control signals, and integration within the MIPS datapath.
+The Glizzium Data Cache, a 32-location, 32-bit-wide RAM, is where your data gets its glizzy flavor. Addressed by the low-order 5 bits of the ALU output, this cache is the secret ingredient in our MIPS datapath. It's not just memory; it's a flavorful experience.
 
-## Specifications:
+## Specifications
 
 * **Memory:** 32 locations, each storing 32 bits.
 * **Addressing:** Uses ALU's low-order 5 bits.
 
-## Control Signals:
+## Control Signals
 
-* **Reset (`reset`):** Asynchronously resets the Data Cache.
-* **Clock (`clk`):** Synchronizes write operations.
-* **Data Write Control (`data_write`):** Enables data writes on the rising clock edge (`'1'`).
+* **Reset (`reset`):** A reset that's as bold as your glizzy cravings.
+* **Clock (`clk`):** The heartbeat of Glizzium's data operations.
+* **Data Write Control (`data_write`):** Because writing data should be as satisfying as taking a bite of your favorite glizzy.
 
-## Ports:
+## Ports
 
 * **Data Input (`d_in`):** Connects to `out_b` from the Register File for store instructions.
-* **Data Output (`d_out`):** Provides 32 bits read from the Data Cache.
+* **Data Output (`d_out`):** Provides 32 bits read from the Glizzium Data Cache.
 
-## Implementation:
+## Implementation
 
 * Single-port register file with a clocked VHDL process.
 * Multiplexer selects Data Cache output for load and ALU output for other instructions.
 * Output feeds into `d_in` of the Register File.
 
-## Integration:
+## Integration
 
 * Accessible by load and store instructions.
 * Data read during loads; data written during stores.
+
+🔗 **Join the Glizzium Revolution: #GlizzyCodingAdventure** 🔗
+
+Are you ready to savor the flavor of Glizzium? Join the revolution, spice up your code, and let's embark on a coding adventure that's as bold as your favorite glizzy! 🌭💻
