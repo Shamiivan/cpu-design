@@ -1,92 +1,123 @@
-# 🌭🔥 **Glizzium: Spicing Up CPU Design with Flavorful Innovation!** 🔥🌭
-
-
-
-Dive into the delectable world of Glizzium, where CPU design becomes a savory journey through VHDL. Our comprehensive CPU design boasts a control unit, instruction memory, register files, data memory, and a tantalizing ALU. Ideal for both seasoned developers and glizzy enthusiasts alike, Glizzium's VHDL architecture is the perfect blend of learning and flavor.
-
-# ALU
-
-The Glizzium ALU is the heart of our spicy CPU, featuring two 32-bit input operands and a 32-bit output port. It dances to the rhythm of control inputs like func and logic_func, orchestrating a symphony of arithmetic and logical operations. From load upper immediate to set less than zero, our ALU is seasoned with versatility. And let's not forget logic_func, the maestro behind AND, OR, XOR, and NOR operations—because computing should be as flavorful as your favorite glizzy!
+# Project: VHDL-Based Datapath and Control for a Simple Processor (Legacy Example)
+`Notice 
+This project is no longer actively supported and serves as an educational example for those interested in CPU design. The implementation showcases fundamental concepts in processor architecture and VHDL design.
+`
+## Description:
+This project implements a simple processor datapath in VHDL, combining arithmetic, logical, branching, and memory operations. It uses modular design principles to break the architecture into smaller reusable components like ALU, registers, instruction cache, data cache, and program counter. This processor supports a variety of instructions, including R-type, I-type, and branching instructions.
 
 ![1700642004659](image/README/1700642004659.png)
+---
 
-## MSB of Adder
+#### **Key Features**:
 
-In the world of Glizzium, the Most Significant Bit (MSB) takes center stage during the "slt" (set less than zero) instruction. Picture this: the spicy comparison of x and y, the subtract operation unveiling the sign bit, and the grand finale—padding with 0s to create a 32-bit masterpiece. That's the magic of Glizzium's MSB, where every bit tells a flavorful story.
+1. **Arithmetic Logic Unit (ALU)**:
+   - Performs addition, subtraction, and logical operations (`AND`, `OR`, `XOR`, `NOR`).
+   - Outputs flags for `overflow` and `zero` to indicate computation status.
+   - Configurable via control signals (`func`, `logic_func`, `add_sub`).
 
-## Output of Adder
+2. **Datapath**:
+   - Manages instruction fetch, decode, execution, and memory access.
+   - Includes components such as `Program Counter (PC)`, `Instruction Cache`, `Register File`, `Sign Extender`, `ALU`, and `Data Cache`.
+   - Implements instruction decoding with control signals for operation flow.
 
-The output of our adder is like the perfect glizzy bite—full of substance and satisfaction. It's the result of a carefully orchestrated addition or subtraction, with arithmetic performed in the bold language of 32-bit two's complement notation. Glizzium's adder ensures that every computation is as robust and satisfying as your favorite glizzy feast.
+3. **Control Unit**:
+   - Generates control signals for instruction execution (`add`, `sub`, `branch`, etc.).
+   - Supports different instruction types with branching, jumping, and memory access.
 
-## Output of Logic Unit
+4. **Memory Components**:
+   - **Instruction Cache**: Provides instructions based on the program counter.
+   - **Data Cache**: Stores and retrieves data for memory operations.
 
-Glizzium's logic unit brings a burst of flavor to your computations. It's the secret sauce behind logical operations—AND, OR, XOR, and NOR. Just like choosing the right condiment for your glizzy, our logic unit lets you spice up your code with precision, making every computation a taste sensation.
+5. **Branching and Jumping**:
+   - Supports conditional (`beq`, `bne`, `bltz`) and unconditional (`j`) branches.
+   - Handles PC updates using a `next_address` component.
 
-# PC Entity
+6. **Testbenches**:
+   - Includes testbenches for individual components, like ALU and datapath, to verify correctness.
 
-## Entity Declaration
+---
 
-```vhdl
--- Embrace the Glizzium Journey
-entity glizzy_pc is
-    port(
-        glizzy_pc_in  : in  std_logic_vector(31 downto 0);  -- Input: New value for Glizzy Program Counter
-        glizzy_reset  : in  std_logic;                      -- Input: Reset signal
-        glizzy_clk    : in  std_logic;                      -- Input: Clock signal
-        glizzy_pc_out : out std_logic_vector(31 downto 0)  -- Output: Current value of Glizzy Program Counter
-    );
-end glizzy_pc;
-```
+#### **Key Components**:
 
-Introducing the Glizzy Program Counter (PC) entity—a crucial part of our flavorful digital system. It's not just a counter; it's the pulse of Glizzium, with inputs for a new PC value, a reset signal, and the heartbeat of computing—clock signal. The current PC value is not just an output; it's a flavorful revelation.
+1. **ALU**:
+   - Inputs: Operands (`x`, `y`), operation selectors (`func`, `logic_func`, `add_sub`).
+   - Outputs: Computed result, `overflow` flag, `zero` flag.
 
-# Registers
+2. **Program Counter (PC)**:
+   - Keeps track of the current instruction address.
+   - Supports reset and clocked updates.
 
-# Next Address Unit
+3. **Instruction Cache**:
+   - Contains predefined instructions.
+   - Outputs instructions based on the current PC value.
 
-# Control Unit
+4. **Data Cache**:
+   - Stores temporary data for memory instructions like `lw` and `sw`.
 
-# Instruction Cache
+5. **Register File**:
+   - Stores and retrieves data for computation.
+   - Provides dual read ports and a write port.
 
-The Glizzium Instruction Cache unit is where the magic begins. With a 5-bit address input and a 32-bit data output, it's the gateway to the glizzy-inspired machine code. Just like choosing the perfect glizzy toppings, the `instruction_cache` entity lets you select instructions with precision. Modify the cases, change the flavor—because in Glizzium, every instruction is a culinary delight.
+6. **Control Unit**:
+   - Decodes instructions and generates appropriate control signals.
 
-# Sign Extension
+7. **Sign Extender**:
+   - Extends immediate values to 32-bit for computations.
 
-In the world of Glizzium, the Sign Extension is the spice that brings balance to our immediate field. Whether it's loading upper immediate, setting less than, or diving into arithmetic and logical operations, our Sign Extension ensures that your code's flavor is just right. With different sign extension formats to choose from, Glizzium lets you sign-extend with style.
+8. **Next Address Logic**:
+   - Computes the next PC value for sequential, branch, and jump instructions.
 
-# Data Cache
+---
 
-## Overview
+#### **Supported Instructions**:
 
-The Glizzium Data Cache, a 32-location, 32-bit-wide RAM, is where your data gets its glizzy flavor. Addressed by the low-order 5 bits of the ALU output, this cache is the secret ingredient in our MIPS datapath. It's not just memory; it's a flavorful experience.
+1. **Arithmetic and Logic**:
+   - `add`, `sub`, `and`, `or`, `xor`, `nor`.
 
-## Specifications
+2. **Immediate Operations**:
+   - `addi`, `andi`, `ori`, `xori`, `slti`, `lui`.
 
-* **Memory:** 32 locations, each storing 32 bits.
-* **Addressing:** Uses ALU's low-order 5 bits.
+3. **Memory Access**:
+   - `lw`, `sw`.
 
-## Control Signals
+4. **Branch and Jump**:
+   - `beq`, `bne`, `bltz`, `j`.
 
-* **Reset (`reset`):** A reset that's as bold as your glizzy cravings.
-* **Clock (`clk`):** The heartbeat of Glizzium's data operations.
-* **Data Write Control (`data_write`):** Because writing data should be as satisfying as taking a bite of your favorite glizzy.
+---
 
-## Ports
+#### **Simulation and Testing**:
 
-* **Data Input (`d_in`):** Connects to `out_b` from the Register File for store instructions.
-* **Data Output (`d_out`):** Provides 32 bits read from the Glizzium Data Cache.
+1. **ALU Testbench**:
+   - Verifies ALU operations like addition, subtraction, and logical computations.
 
-## Implementation
+2. **Datapath Testbench**:
+   - Simulates instruction execution and validates program flow.
 
-* Single-port register file with a clocked VHDL process.
-* Multiplexer selects Data Cache output for load and ALU output for other instructions.
-* Output feeds into `d_in` of the Register File.
+3. **Behavioral Simulations**:
+   - Run test programs using the instruction cache to verify end-to-end execution.
 
-## Integration
+---
 
-* Accessible by load and store instructions.
-* Data read during loads; data written during stores.
+#### **How to Use**:
 
-🔗 **Join the Glizzium Revolution: #GlizzyCodingAdventure** 🔗
+1. **Setup**:
+   - Use a VHDL simulation tool like ModelSim or Vivado for compiling and testing.
 
-Are you ready to savor the flavor of Glizzium? Join the revolution, spice up your code, and let's embark on a coding adventure that's as bold as your favorite glizzy! 🌭💻
+2. **Compilation**:
+   - Compile all the components (`alu`, `datapath`, `instruction_cache`, etc.).
+
+3. **Simulation**:
+   - Load the testbench files to simulate and verify the components.
+
+4. **Modification**:
+   - Add custom instructions by modifying the control logic and instruction cache.
+
+---
+
+#### **Future Enhancements**:
+While this project remains static, aspiring designers can use it as a foundation to:
+- Extend the instruction set to support more operations like division and multiplication.
+- Implement pipeline stages to improve performance.
+- Add a hazard detection unit for better instruction flow in complex programs.
+
+---
